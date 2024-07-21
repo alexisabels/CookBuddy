@@ -5,16 +5,19 @@ import { Appbar, BottomNavigation } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import Tabs from "./Tabs";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Tab = createBottomTabNavigator();
 
 function App() {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Tabs />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <Tabs />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 
