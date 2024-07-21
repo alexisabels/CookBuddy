@@ -1,26 +1,19 @@
-import { Text, View } from "react-native";
-import React, { Component } from "react";
+// En CrearRecetaScreen.js
+import React from "react";
+import { View, Text } from "react-native";
+import { Appbar } from "react-native-paper";
 
-export class MyRecipesScreen extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
+const MyRecipesScreen = () => {
+  return (
+    <>
+      <Appbar.Header>
+        <Appbar.Content title="Crear Receta" />
+      </Appbar.Header>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Hola, esta es la pantalla para ver tus recetas.</Text>
       </View>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default MyRecipesScreen;
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  appTitle: {
-    fontWeight: "bold",
-  },
-});
