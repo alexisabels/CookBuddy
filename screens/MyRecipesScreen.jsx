@@ -1,35 +1,53 @@
-// En CrearRecetaScreen.js
-import React, { useState } from "react";
-import { View, Text } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { View, Text, Keyboard } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { Appbar, Card } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Appbar, Card, IconButton } from "react-native-paper";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import RecipeCard from "../RecipeCard";
 
 const MyRecipesScreen = () => {
-  const [recetas, setRecetas] = useState([
-    {
-      id: "1",
-      titulo: "Tarta de manzana",
-      ingredientes: "Manzanas, azúcar, harina",
-      pasos: "Cortar manzanas...",
-    },
-    {
-      id: "2",
-      titulo: "Paella",
-      ingredientes: "Arroz, pollo, mariscos",
-      pasos: "Cocinar el arroz...",
-    },
-  ]);
+  const [recetasArray, setRecetasArray] = useState([]);
 
-  const RecipeCard = ({ item }) => (
-    <Card style={{ margin: 8 }}>
-      <Card.Title title={item.titulo} />
-      <Card.Content>
-        <Text>{item.ingredientes}</Text>
-        <Text>{item.pasos}</Text>
-      </Card.Content>
-    </Card>
+  const getRecetas = async () => {
+    Keyboard.dismiss();
+    try {
+      const recetasExistentes = await AsyncStorage.getItem("recetas");
+      const recetasArray = recetasExistentes
+        ? JSON.parse(recetasExistentes)
+        : [];
+      setRecetasArray(recetasArray);
+    } catch (error) {
+      console.error("Error al obtener la receta", error);
+    }
+  };
+
+  const eliminarReceta = async (id) => {
+    try {
+      const recetasExistentes = await AsyncStorage.getItem("recetas");
+      const recetasArray = recetasExistentes
+        ? JSON.parse(recetasExistentes)
+        : [];
+      const recetasActualizadas = recetasArray.filter(
+        (receta) => receta.id !== id
+      );
+      await AsyncStorage.setItem(
+        "recetas",
+        JSON.stringify(recetasActualizadas)
+      );
+      setRecetasArray(recetasActualizadas);
+    } catch (error) {
+      console.error("Error al borrar la receta", error);
+    }
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getRecetas();
+    }, [])
   );
+
   return (
     <>
       <Appbar.Header>
@@ -37,7 +55,7 @@ const MyRecipesScreen = () => {
       </Appbar.Header>
       <View>
         <FlatList
-          data={recetas}
+          data={recetasArray}
           renderItem={RecipeCard}
           keyExtractor={(item) => item.id}
         />
