@@ -18,9 +18,9 @@ export default function Tabs() {
         },
         tabBarStyle: {
           backgroundColor: "white",
-          height: Platform.OS === "ios" ? 80 : 70, // Aumenta la altura en iOS
+          height: Platform.OS === "ios" ? 80 : 70,
           paddingVertical: Platform.OS === "android" ? 5 : 10,
-          paddingBottom: Platform.OS === "ios" ? 20 : 10, // Ajusta el paddingBottom para iOS
+          paddingBottom: Platform.OS === "ios" ? 20 : 10,
         },
       }}
     >

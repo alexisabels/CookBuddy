@@ -65,6 +65,7 @@ const MyRecipesScreen = () => {
             <RecipeCard item={item} eliminarReceta={eliminarReceta} />
           )}
           keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingBottom: 120 }}
         />
       </View>
       <Snackbar visible={visible} onDismiss={onDismissSnackBar} duration={3000}>

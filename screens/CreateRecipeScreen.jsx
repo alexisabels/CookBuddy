@@ -71,70 +71,75 @@ const CrearRecetaScreen = () => {
   };
   return (
     <>
+      <Appbar.Header>
+        <Appbar.Content title="Crear Receta" />
+      </Appbar.Header>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAwareScrollView
-          style={{ flex: 1 }}
-          resetScrollToCoords={{ x: 0, y: 0 }}
-          contentContainerStyle={{ flexGrow: 1 }}
-          scrollEnabled={true}
-          extraHeight={10}
-          extraScrollHeight={10}
-          keyboardShouldPersistTaps="handled"
-        >
-          <Appbar.Header>
-            <Appbar.Content title="Crear Receta" />
-          </Appbar.Header>
-          <View style={{ margin: 20 }}>
-            <TextInput
-              style={{ marginBottom: 10 }}
-              label="Nombre de la receta"
-              value={nombre}
-              onChangeText={setNombre}
-              mode="outlined"
-            />
-            <Button icon="plus" mode="outlined" onPress={nuevoCampoIngrediente}>
-              Añadir ingrediente
-            </Button>
-            {ingredientes.map((ingrediente, index) => (
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  marginBottom: 5,
-                  marginTop: 5,
-                }}
+        <View style={{ flex: 1 }}>
+          <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            scrollEnabled={true}
+            extraHeight={10}
+            extraScrollHeight={10}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={{ margin: 20 }}>
+              <TextInput
+                style={{ marginBottom: 10 }}
+                label="Nombre de la receta"
+                value={nombre}
+                onChangeText={setNombre}
+                mode="outlined"
+              />
+              <Button
+                icon="plus"
+                mode="outlined"
+                onPress={nuevoCampoIngrediente}
               >
-                <TextInput
-                  key={index}
-                  value={ingrediente}
-                  onChangeText={(text) => handleIngredientChange(text, index)}
-                  mode="outlined"
-                  style={{ flex: 1, marginRight: 8 }}
-                />
-                <Button icon="delete" onPress={() => removeIngredient(index)}>
-                  Borrar
-                </Button>
-              </View>
-            ))}
+                Añadir ingrediente
+              </Button>
+              {ingredientes.map((ingrediente, index) => (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 5,
+                    marginTop: 5,
+                  }}
+                >
+                  <TextInput
+                    key={index}
+                    value={ingrediente}
+                    onChangeText={(text) => handleIngredientChange(text, index)}
+                    mode="outlined"
+                    style={{ flex: 1, marginRight: 8 }}
+                  />
+                  <Button icon="delete" onPress={() => removeIngredient(index)}>
+                    Borrar
+                  </Button>
+                </View>
+              ))}
 
-            <TextInput
-              style={{ marginBottom: 10 }}
-              multiline
-              label="Pasos"
-              value={pasos}
-              onChangeText={setPasos}
-              mode="outlined"
-            />
-            <Button
-              mode="contained-tonal"
-              buttonColor="#007C73"
-              textColor="#ffff"
-              onPress={guardarReceta}
-            >
-              Guardar
-            </Button>
-          </View>
-        </KeyboardAwareScrollView>
+              <TextInput
+                style={{ marginBottom: 10 }}
+                multiline
+                label="Pasos"
+                value={pasos}
+                onChangeText={setPasos}
+                mode="outlined"
+              />
+              <Button
+                mode="contained-tonal"
+                buttonColor="#007C73"
+                textColor="#ffff"
+                onPress={guardarReceta}
+              >
+                Guardar
+              </Button>
+            </View>
+          </KeyboardAwareScrollView>
+        </View>
       </TouchableWithoutFeedback>
       <Snackbar visible={visible} onDismiss={onDismissSnackBar} duration={3000}>
         {snackbarText}
