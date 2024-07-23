@@ -6,9 +6,11 @@ import {
   Keyboard,
   ScrollView,
   Alert,
+  Platform,
 } from "react-native";
 import { Appbar, Button, TextInput, Snackbar } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const CrearRecetaScreen = () => {
   const [nombre, setNombre] = useState("");
@@ -68,9 +70,17 @@ const CrearRecetaScreen = () => {
     setIngredientes([...ingredientes, ""]);
   };
   return (
-    <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+    <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView keyboardShouldPersistTaps="handled">
+        <KeyboardAwareScrollView
+          style={{ flex: 1 }}
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          contentContainerStyle={{ flexGrow: 1 }}
+          scrollEnabled={true}
+          extraHeight={10}
+          extraScrollHeight={10}
+          keyboardShouldPersistTaps="handled"
+        >
           <Appbar.Header>
             <Appbar.Content title="Crear Receta" />
           </Appbar.Header>
@@ -90,7 +100,8 @@ const CrearRecetaScreen = () => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  marginBottom: 10,
+                  marginBottom: 5,
+                  marginTop: 5,
                 }}
               >
                 <TextInput
@@ -123,12 +134,12 @@ const CrearRecetaScreen = () => {
               Guardar
             </Button>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
       <Snackbar visible={visible} onDismiss={onDismissSnackBar} duration={3000}>
         {snackbarText}
       </Snackbar>
-    </KeyboardAvoidingView>
+    </>
   );
 };
 
