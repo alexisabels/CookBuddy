@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CrearRecetaScreen = () => {
   const [nombre, setNombre] = useState("");
-  const [ingredientes, setIngredientes] = useState("");
+  const [ingredientes, setIngredientes] = useState([]); //adaptado para que sea un array de ing.
   const [pasos, setPasos] = useState("");
 
   const [visible, setVisible] = useState(false);
@@ -43,7 +43,7 @@ const CrearRecetaScreen = () => {
       setSnackbarText("Receta guardada con éxito!");
       setVisible(true);
       setNombre("");
-      setIngredientes("");
+      setIngredientes([]);
       setPasos("");
     } catch (error) {
       setSnackbarText("Error al guardar la receta.");
@@ -52,8 +52,21 @@ const CrearRecetaScreen = () => {
     }
   };
 
+  const handleIngredientChange = (text, ingrediente) => {
+    const nuevosIngredientes = [...ingredientes];
+    nuevosIngredientes[ingrediente] = text;
+    setIngredientes(nuevosIngredientes);
+  };
   const onDismissSnackBar = () => setVisible(false);
 
+  const removeIngredient = (index) => {
+    const newIngredients = ingredientes.filter((_, i) => i !== index);
+    setIngredientes(newIngredients);
+  };
+
+  const nuevoCampoIngrediente = () => {
+    setIngredientes([...ingredientes, ""]);
+  };
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -69,14 +82,30 @@ const CrearRecetaScreen = () => {
               onChangeText={setNombre}
               mode="outlined"
             />
-            <TextInput
-              style={{ marginBottom: 10 }}
-              multiline
-              label="Ingredientes"
-              value={ingredientes}
-              onChangeText={setIngredientes}
-              mode="outlined"
-            />
+            <Button icon="plus" mode="outlined" onPress={nuevoCampoIngrediente}>
+              Añadir ingrediente
+            </Button>
+            {ingredientes.map((ingrediente, index) => (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
+              >
+                <TextInput
+                  key={index}
+                  value={ingrediente}
+                  onChangeText={(text) => handleIngredientChange(text, index)}
+                  mode="outlined"
+                  style={{ flex: 1, marginRight: 8 }}
+                />
+                <Button icon="delete" onPress={() => removeIngredient(index)}>
+                  Borrar
+                </Button>
+              </View>
+            ))}
+
             <TextInput
               style={{ marginBottom: 10 }}
               multiline
