@@ -1,26 +1,38 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { Card, Appbar } from "react-native-paper";
+import { Card, Appbar, Chip } from "react-native-paper";
 
-const RecipeCard = ({ item, eliminarReceta }) => (
-  <Card style={styles.card}>
-    <Card.Title
-      title={item.nombre}
-      titleStyle={styles.title}
-      right={(props) => (
-        <Appbar.Action
-          icon="delete"
-          iconColor="#FF0000"
-          onPress={() => eliminarReceta(item.id)}
-        />
-      )}
-    />
-    <Card.Content>
-      <Text style={styles.ingredientes}>{item.ingredientes}</Text>
-      <Text style={styles.pasos}>{item.pasos}</Text>
-    </Card.Content>
-  </Card>
-);
+const RecipeCard = ({ item, eliminarReceta }) => {
+  const ingredientes = Array.isArray(item.ingredientes)
+    ? item.ingredientes
+    : [];
+
+  return (
+    <Card style={styles.card}>
+      <Card.Title
+        title={item.nombre}
+        titleStyle={styles.title}
+        right={(props) => (
+          <Appbar.Action
+            icon="delete"
+            iconColor="#FF0000"
+            onPress={() => eliminarReceta(item.id)}
+          />
+        )}
+      />
+      <Card.Content>
+        <View style={styles.chipContainer}>
+          {ingredientes.map((ingrediente, index) => (
+            <Chip key={index} style={styles.chip}>
+              {ingrediente}
+            </Chip>
+          ))}
+        </View>
+        <Text style={styles.pasos}>{item.pasos}</Text>
+      </Card.Content>
+    </Card>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
@@ -40,9 +52,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  ingredientes: {
-    fontSize: 16,
-    color: "#333",
+  chipContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 4,
+  },
+  chip: {
+    marginRight: 4,
     marginBottom: 4,
   },
   pasos: {
