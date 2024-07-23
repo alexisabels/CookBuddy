@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
+  Alert,
 } from "react-native";
 import { Appbar, Button, TextInput, Snackbar } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,8 +22,10 @@ const CrearRecetaScreen = () => {
     Keyboard.dismiss();
 
     if (!nombre || !ingredientes || !pasos) {
-      setSnackbarText("Todos los campos son obligatorios.");
-      setVisible(true);
+      Alert.alert(
+        "Error al guardar receta",
+        "Todos los campos son obligatorios."
+      );
       return;
     }
 

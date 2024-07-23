@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Text, Keyboard } from "react-native";
+import { View, Text, Keyboard, StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import { Appbar, Card, IconButton } from "react-native-paper";
+import { Appbar, Card, IconButton, Snackbar } from "react-native-paper";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -9,7 +9,8 @@ import RecipeCard from "../RecipeCard";
 
 const MyRecipesScreen = () => {
   const [recetasArray, setRecetasArray] = useState([]);
-
+  const [visible, setVisible] = useState(false);
+  const [snackbarText, setSnackbarText] = useState("");
   const getRecetas = async () => {
     Keyboard.dismiss();
     try {
@@ -37,6 +38,8 @@ const MyRecipesScreen = () => {
         JSON.stringify(recetasActualizadas)
       );
       setRecetasArray(recetasActualizadas);
+      setSnackbarText("Receta eliminada corretamente");
+      setVisible(true);
     } catch (error) {
       console.error("Error al borrar la receta", error);
     }
@@ -48,6 +51,8 @@ const MyRecipesScreen = () => {
     }, [])
   );
 
+  const onDismissSnackBar = () => setVisible(false);
+
   return (
     <>
       <Appbar.Header>
@@ -56,10 +61,15 @@ const MyRecipesScreen = () => {
       <View>
         <FlatList
           data={recetasArray}
-          renderItem={RecipeCard}
+          renderItem={({ item }) => (
+            <RecipeCard item={item} eliminarReceta={eliminarReceta} />
+          )}
           keyExtractor={(item) => item.id}
         />
       </View>
+      <Snackbar visible={visible} onDismiss={onDismissSnackBar} duration={3000}>
+        {snackbarText}
+      </Snackbar>
     </>
   );
 };
